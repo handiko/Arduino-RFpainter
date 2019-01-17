@@ -20,6 +20,20 @@ A few years ago, a guy who own github username [drmpeg](https://github.com/drmpe
 * When the element value is space, then the DDS AD9850 is programmed to output very low frequency which we don't care about (in this case, 1 kHz). When the element value is an alphanumeric, then then the DDS AD9850 is programmed to output some RF frequency + some offset, proportional to the width position value.
 * Then, FMCW is generated.
 
+The detail of how one can program the AD9851 is presented in the datasheet.
+
+## Arduino UNO to DDS AD9851 connection:
+|Arduino UNO |AD9851   |
+|:----------:|:-------:|
+|8           |RST      |
+|9           |DATA     |
+|10          |FQ       |
+|11          |CLK      |
+|5V          |5V       |
+|GND         |GND      |
+
+**Very Important**: Don't forget to pull up DDS D0 and D1 pins to 5V thru a 10k resistor and ground DDS D2 pin. Otherwise, the serial programming wouldn't work. (please refer to the datasheet, page 15, figure 18)
+
 ## How to Put Your Own Cat (or other pics)
 * Prepare your image, which is black and white.
 * Convert your image into an Ascii Art using this tool : [http://picascii.com/](http://picascii.com/).
