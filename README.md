@@ -3,6 +3,8 @@ A few years ago, a guy who own github username [drmpeg](https://github.com/drmpe
 
 *Note, FMCW : Frequency Modulated Continuous Wave, OFDM : Orthogonal Frequency Division Multiplexing*
 
+![](./handiko_spectrogram.png)
+
 ## Requirements
 * Arduino UNO
 * AD9851 DDS module
@@ -41,6 +43,8 @@ The detail of how one can program the AD9851 is presented in the datasheet.
 * Write the definitions of your image width and heigth (from the ascii art perspective).
 * Call your ascii-art in the `drawCat` function.
 
+![](./process.png)
+
 ## Signal Properties
 * Main RF Carrier is at **35.0 MHz** (be cautious, configureable at the `void drawCat(unsigned long in_freq, int scale, int repeat)` function).
 * FM Bandwidth is adjustable using parameter `int scale`.
@@ -49,9 +53,11 @@ The detail of how one can program the AD9851 is presented in the datasheet.
 ## Examples
 ### Arduino-AD9850-Ascii-Art_Cats
 This example will run the drawCat function with the scale = 2 and repeat = 2. Using RTL SDR and GQRX, set the RTL SDR center freq at 35.04 (approx.), FFT size = 32768, rate = 20fps, and Time span = auto.
+![](./low_res_cat.png)
 
 ### Arduino-AD9850-Ascii-Art_Cats-SLOW
 This example will run the drawCat function with the scale = 2 and repeat = **20**. Rather usefull to generate more "hi-res" Spectrogram image. Using RTL SDR and GQRX, set the RTL SDR center freq at 35.04 (approx.), FFT size = 32768, rate = 20fps, and Time span = **5min**.
+![](./hi_res_cat.png)
 
 ## Acknowledgement
 * Ron Economos, [drmpeg](https://github.com/drmpeg) who wrote [gr-painter](https://github.com/drmpeg/gr-paint) for the inspiration.
