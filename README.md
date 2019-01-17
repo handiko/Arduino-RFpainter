@@ -25,14 +25,7 @@ A few years ago, a guy who own github username [drmpeg](https://github.com/drmpe
 The detail of how one can program the AD9851 is presented in the datasheet.
 
 ## Arduino UNO to DDS AD9851 connection:
-|Arduino UNO |AD9851   |
-|:----------:|:-------:|
-|8           |RST      |
-|9           |DATA     |
-|10          |FQ       |
-|11          |CLK      |
-|5V          |5V       |
-|GND         |GND      |
+![](./table.png)
 
 **Very Important**: Don't forget to pull up DDS D0 and D1 pins to 5V thru a 10k resistor and ground DDS D2 pin. Otherwise, the serial programming wouldn't work. (please refer to the datasheet, page 15, figure 18)
 
