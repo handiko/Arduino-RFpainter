@@ -52,3 +52,15 @@ This example will run the drawCat function with the scale = 2 and repeat = 2. Us
 
 ### Arduino-AD9850-Ascii-Art_Cats-SLOW
 This example will run the drawCat function with the scale = 2 and repeat = **20**. Rather usefull to generate more "hi-res" Spectrogram image. Using RTL SDR and GQRX, set the RTL SDR center freq at 35.04 (approx.), FFT size = 32768, rate = 20fps, and Time span = **5min**.
+
+## Acknowledgement
+* Ron Economos, [drmpeg](https://github.com/drmpeg) who wrote [gr-painter](https://github.com/drmpeg/gr-paint) for the inspiration.
+* Alexandru csete, for the [GQRX](https://github.com/csete/gqrx/)
+
+## Contributing
+1. Fork it [https://github.com/handiko/Arduino-RFpainter/fork](https://github.com/handiko/Arduino-RFpainter/fork)
+2. Create new branch (`git checkout -b add-blah-blah`)
+3. Do some editing / create new feature
+4. Commit your works (`git commit -m "Adding some blah blah blah.."`)
+5. Push to the branch (`git push -u origin add-blah-blah`)
+6. Create a new Pull Request
