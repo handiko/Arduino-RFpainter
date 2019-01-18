@@ -16,109 +16,14 @@
  */
 #include <avr/pgmspace.h>
 
-#define CLK   11
-#define FQ    10
-#define DATA  9
-#define RST   8
-
-#define D0    7
-#define D1    7
-#define D2    6
+#define CLK   PB3
+#define FQ    PB2
+#define DATA  PB1
+#define RST   PB0
 
 #define TD    1
 
 unsigned long freq=35000000;
-
-/*
-#define WIDTH   26
-#define HEIGHT  33
-const char my_ascii[HEIGHT][WIDTH + 1] PROGMEM = {
-"    `                     ",
-"   ``                     ",                      
-"  ::`                     ",                         
-" ,::`                     ",                         
-" :::`                     ",                         
-".:::`                     ",                         
-",:::`                     ",
-"               ```        ",
-";'''`        :::::::.     ",
-";'''`      ,::::::::::    ",
-";'''`     ,::::::::::::   ",
-";'''`    `:::::,.,::::::  ",
-";'''`    ::::,     `::::, ",
-";'''`   `::::       `:::: ",
-";'''`   ,:::         ::::`",
-";'''`   ::::         .:::.",
-";'''`   ::::         `:::,",   
-":'''.   ::::         `:::.",   
-".''''   ::::         ,:::`",   
-" ''''   ::::         :::: ",    
-" '''''  ::::        ::::, ",     
-"  ''''';::::......,:::::  ",      
-"  .'''''::::'''''::::::`  ",      
-"   ,''''::::'''';:::::`   ",      
-"     '''::::''':::::,     ",        
-"       :::::;,,,,,`       ",
-"        ::::              ",                  
-"        ::::              ",                  
-"        :::,              ",                  
-"        :::`              ",                  
-"        :::               ",                  
-"        ::                ",
-"        `                 "
-};
-*/
-
-
-#define WIDTH   84
-#define HEIGHT  45
-const char my_ascii[HEIGHT][WIDTH + 1] PROGMEM = {
-"                                                                          ,@@@@@`   ", 
-"                                                                         '@@@@@@@`  ",
-"                                                            `           `@@#  #@@@  ",
-"                                                          ,@@           #@@    @@@' ",
-"                                                          @@@,     @+   @@@     @@@ ",
-"                                                   :      `@@@   `@@`   @@@     @@@ ",
-"                                                 '@@       @@@.  #@@    '@@;    ;@@`",
-"                                                 ;@@#      .@@@  @@;     @@@    ;@@ ",
-"                                                  @@@       @@@``@@      #@@@   @@@ ",
-"                                                  +`        ,@@@+@@`      @@@@@@@@. ",
-"                                           `                 @@@@@@@#      @@@@@@.  ",
-"                                         '@@       `@@'      ;@@@@@@@@,     .#+.    ",
-"                                         @@@`    .@@@@@       @@@+ #@@@@            ",
-"                                         :@@@    @@@@@@:      '@@+  .@@@@;          ",
-"                                          @@@    ;@ `@@@       @@@    @@:           ",
-"                                          ;@@#       @@@,      #@@'                 ",
-"                                       :: @@@       `@@@       @@@                  ",
-"                                      .@@@@@@@+       @@@.  ::  #@`                 ",
-"                                      @@@#:@@@@       .@@@;@@@                      ",
-"                                     .@@@   @@@;       @@@@@@+                      ",
-"                                     :@@;    @@@      #@@@@;                        ",
-"                             `@@@+   .@@#    @@@:   @@@@@:                          ",
-"                             @@@@@;   @@@    ,@@@   #@@.                            ",
-"                          +@.@##@@@   @@@;   `@@@.   `                              ",
-"                         ;@@@'  #@@'  `@@@`  '@@@@                                  ",
-"                          @@@.   @@@   #@@@##@'@+                                   ",
-"                  `+@+    +@@+   #@@:   @@@@@@                                      ",
-"        #.      `@@@@@@    @@@    @@@    #@@@`                                      ",
-"      ,@@@     '@@@@@@@@   #@@;   @@@,                                              ",
-"       @@@`   +@@+   @@@.   @@@   `@@@                                              ",
-" .@    :@@@   `@,   ;@@@@   @@@,   @@@                                              ",
-"'@@#    @@@    ;  ;@@@@@@`  `@@@   .                                                ",
-" @@@    '@@#     @@@@.,@@@   @@@.                                                   ",
-" +@@+    @@@    @@@;   @@@   `@'                                                    ",
-"  @@@ `@@@@@+   @@@    @@@#                                                         ",
-"  #@@@@@@@@@@   @@@   .@@@@                                                         ",
-"   @@@@@# #@@'  @@@@,'@#'`                                                          ",
-"   @@@#    @@@   @@@@@@                                                             ",
-"   `@@@    @@@:  `@@@'                                                              ",
-"    @@@,   `@@@                                                                     ",
-"    `@@@    @@@,                                                                    ",
-"     @@@.   .@,                                                                     ",
-"     ,@@@                                                                           ",
-"      @@@`                                                                          ",
-"      :#                                                                            "
-};
 
 #define CAT_WIDTH  100
 #define CAT_HEIGHT 71
@@ -204,43 +109,27 @@ void draw(unsigned long in_freq, int scale, int repeat);
 
 void dds_init(void)
 {
-  pinMode(D0, OUTPUT);
-  pinMode(D1, OUTPUT);
-  pinMode(D2, OUTPUT);
-  pinMode(RST, OUTPUT);
-  pinMode(DATA, OUTPUT);
-  pinMode(FQ, OUTPUT);
-  pinMode(CLK, OUTPUT);
-
-  digitalWrite(D0, HIGH);
-  digitalWrite(D1, HIGH);
-  digitalWrite(D2, LOW);
-
-  digitalWrite(RST, HIGH);
-  digitalWrite(DATA, HIGH);
-  digitalWrite(FQ, LOW);
-  digitalWrite(CLK, LOW);
+  DDRB = (1<<CLK)|(1<<FQ)|(1<<DATA)|(1<<RST);
+  PORTB = (0<<CLK)|(0<<FQ)|(0<<DATA)|(0<<RST);
 }
 
 void dds_reset(void)
 {
-  digitalWrite(CLK, LOW);
-  digitalWrite(FQ, LOW);
-  digitalWrite(DATA, LOW);
+  PORTB &= ~((0<<CLK)|(0<<FQ)|(0<<DATA));
 
-  digitalWrite(RST, LOW); delayMicroseconds(5);
-  digitalWrite(RST, HIGH);delayMicroseconds(5);
-  digitalWrite(RST, LOW); delayMicroseconds(5);
+  PORTB &= ~(1<<RST);     delayMicroseconds(5);
+  PORTB |= (1<<RST);      delayMicroseconds(5);
+  PORTB &= ~(1<<RST);     delayMicroseconds(5);
 
-  digitalWrite(CLK, LOW); delayMicroseconds(5);
-  digitalWrite(CLK, HIGH);delayMicroseconds(5);
-  digitalWrite(CLK, LOW); delayMicroseconds(5);
+  PORTB &= ~(1<<CLK);     delayMicroseconds(5);
+  PORTB |= (1<<CLK);      delayMicroseconds(5);
+  PORTB &= ~(1<<CLK);     delayMicroseconds(5);
 
-  digitalWrite(DATA, LOW);
+  PORTB &= ~(1<<DATA); 
 
-  digitalWrite(FQ, LOW);  delayMicroseconds(5);
-  digitalWrite(FQ, HIGH); delayMicroseconds(5);
-  digitalWrite(FQ, LOW);
+  PORTB &= ~(1<<FQ);     delayMicroseconds(5);
+  PORTB |= (1<<FQ);      delayMicroseconds(5);
+  PORTB &= ~(1<<FQ);
 }
 
 void writeFreq(unsigned long in_freq)
@@ -248,8 +137,9 @@ void writeFreq(unsigned long in_freq)
   unsigned long data_word = ((in_freq * 4294967296UL ) / 180000000UL); 
   boolean bits;
 
-  digitalWrite(FQ, HIGH); delayMicroseconds(TD);
-  digitalWrite(FQ, LOW);
+  PORTB |= (1<<FQ);      
+  delayMicroseconds(TD);
+  PORTB &= ~(1<<FQ);
 
   Serial.print("Set Frequency :");
   Serial.print(in_freq);
@@ -258,13 +148,15 @@ void writeFreq(unsigned long in_freq)
   for(int i=0; i<32; i++)
   {
     bits = ((data_word >> i) & 0x01);
-    digitalWrite(DATA, bits);
+    if(bits)
+      PORTB |= (1<<DATA); 
+    else
+      PORTB &= ~(1<<DATA); 
 
     delayMicroseconds(TD);
-    
-    digitalWrite(CLK, HIGH);
+    PORTB |= (1<<CLK);      
     delayMicroseconds(TD);
-    digitalWrite(CLK, LOW);
+    PORTB &= ~(1<<CLK);     
   }
 
   Serial.print(' ');
@@ -272,54 +164,22 @@ void writeFreq(unsigned long in_freq)
   for(int i=0; i<8; i++)
   {
     if(i<1)
-      digitalWrite(DATA, HIGH);
+      PORTB |= (1<<DATA); 
     else
-      digitalWrite(DATA, LOW);
+      PORTB &= ~(1<<DATA); 
 
     delayMicroseconds(TD);
-    
-    digitalWrite(CLK, HIGH);
+    PORTB |= (1<<CLK);      
     delayMicroseconds(TD);
-    digitalWrite(CLK, LOW);
+    PORTB &= ~(1<<CLK);  
   }
 
   delayMicroseconds(TD);
-    
-  digitalWrite(FQ, HIGH);
+  PORTB |= (1<<FQ);      
   delayMicroseconds(TD);
-  digitalWrite(FQ, LOW);
+  PORTB &= ~(1<<FQ);
 
   return;
-}
-
-void draw(unsigned long in_freq, int scale, int repeat)
-{
-  /**************************************/
-  char c;
-  
-  for(int i=HEIGHT-1;i>-1;i--)
-  {
-    for(int k=0;k<repeat;k++)
-    {
-      for(int j=0;j<WIDTH;j++)
-      {
-        c = pgm_read_byte(&(my_ascii[i][j]));
-        
-        if(isAscii(c) && !isSpace(c) && !isWhitespace(c))
-        {
-          writeFreq((unsigned long)(in_freq + j*scale*400UL));
-        }
-        
-        else if(isSpace(c) || isWhitespace(c))
-        {
-          writeFreq(1000);
-        }
-
-//        for(int l=0;l<(repeat);l++)
-//          writeFreq(1000);
-      }
-    }
-  }
 }
 
 void drawCat(unsigned long in_freq, int scale, int repeat)
@@ -343,9 +203,6 @@ void drawCat(unsigned long in_freq, int scale, int repeat)
         {
           writeFreq(1000);
         }
-
-//        for(int l=0;l<(repeat);l++)
-//          writeFreq(1000);
       }
     }
   }
@@ -367,7 +224,6 @@ void setup()
 
 void loop()
 {
-  //sweepTriangular(35020000, 10000, 500, 1);
   //void draw(unsigned long in_freq, int scale, int repeat)
   drawCat(35000000, 2, 2);
   delay(3000);
