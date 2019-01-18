@@ -1,5 +1,5 @@
 # Arduino RFpainter - Abusing FMCW to Paint Cats on Your Spectrogram
-A few years ago, a guy who own github username [drmpeg](https://github.com/drmpeg) wrote a nice gnuradio block which is called [gr-painter](https://github.com/drmpeg/gr-paint). This block works very well and I had some fun with it. Now, I don't have SDR which can transmit anymore, only receive (an el-cheapo RTL SDR dongle) and I want to have do that again, so, I can't. I have some AD9851 DDS modules lying araund, so I decided to implement FMCW version of gr-painter (because I can't figure out how to implement OFDM on DDS module, yet). It won't be as good as gr-painter (which is using OFDM) but i good enough for me. Sure enough the DDS module is controlled using Arduino UNO and some rather simple code.
+A few years ago, a guy who own github username [drmpeg](https://github.com/drmpeg) wrote a nice gnuradio block which is called [gr-painter](https://github.com/drmpeg/gr-paint). This block works very well and I had some fun with it. Now, I don't have SDR which can transmit anymore, only receive (an el-cheapo RTL SDR dongle) and I want to have do that again, so, I can't. I have some AD9851 DDS modules lying around, so I decided to implement FMCW version of gr-painter (because I can't figure out how to implement OFDM on DDS module, yet). It won't be as good as gr-painter (which is using OFDM) but i good enough for me. Sure enough the DDS module is controlled using Arduino UNO and some rather simple code.
 
 *Note, FMCW : Frequency Modulated Continuous Wave, OFDM : Orthogonal Frequency Division Multiplexing*
 
@@ -13,7 +13,7 @@ A few years ago, a guy who own github username [drmpeg](https://github.com/drmpe
 * Breadboard and some jumper wires
 
 ## Precaution
-**This project will emits Radio waves**. If you don't have any proper radio license, please do this at very low power, don't put any RF power amplifier with it, and do at your own risk!
+**This project will emits radio waves**. If you don't have any proper radio license, please do this at very low power, don't put any RF power amplifier with it, and do at your own risk!
 
 ## Principle of Operation
 * Cat picture is stored in the Arduino `PROGMEM` in the form of binary value ASCII art. (white pixel is represented by space and black pixel is represented by alphanumeric)
@@ -27,12 +27,13 @@ The detail of how one can program the AD9851 is presented in the datasheet.
 ## Arduino UNO to DDS AD9851 connection:
 ![](./table.png)
 
-**Very Important**: Don't forget to pull up DDS D0 and D1 pins to 5V thru a 10k resistor and ground DDS D2 pin. Otherwise, the serial programming wouldn't work. (please refer to the datasheet, page 15, figure 18)
+**Very Important**: Don't forget to pull up the DDS D0 and D1 pins to 5V thru a 10k resistor and ground the DDS D2 pin. Otherwise, the serial programming wouldn't work (please refer to the datasheet, page 15, figure 18).
 
 ## How to Put Your Own Cat (or other pics)
 * Prepare your image, which is black and white.
 * Convert your image into an Ascii Art using this tool : [http://picascii.com/](http://picascii.com/).
-* Put your Ascii-Art in the Arduino Skecth in the form of 2 dimensional array and using `PROGMEM` attribute.
+* Convert the non-alphanumeric characters with any alphanumeric.
+* Put your Ascii-Art in the Arduino Skecth in the form of a 2 dimensional array and using `PROGMEM` attribute.
 * Write the definitions of your image width and heigth (from the ascii art perspective).
 * Call your ascii-art in the `drawCat` function.
 
