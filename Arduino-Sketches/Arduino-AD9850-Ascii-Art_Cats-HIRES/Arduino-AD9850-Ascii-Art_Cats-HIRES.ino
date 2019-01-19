@@ -133,7 +133,7 @@ const byte cat[CAT_HEIGHT][CAT_WIDTH + 1] PROGMEM = {
 void dds_init(void);
 void dds_reset(void);
 void writeFreq(unsigned long in_freq);
-void draw(unsigned long in_freq, int scale, int repeat);
+void drawCat(unsigned long in_freq, int scale, int repeat);
 
 void dds_init(void)
 {
@@ -225,33 +225,6 @@ void writeFreq(unsigned long in_freq)
   return;
 }
 
-/*
-void draw(unsigned long in_freq, int scale, int repeat)
-{
-  char c;
-  
-  for(int i=HEIGHT-1;i>-1;i--)
-  {
-    for(int k=0;k<repeat;k++)
-    {
-      for(int j=0;j<WIDTH;j++)
-      {
-        c = pgm_read_byte(&(my_ascii[i][j]));
-        
-        if(isAscii(c) && !isSpace(c) && !isWhitespace(c))
-        {
-          writeFreq((unsigned long)(in_freq + j*scale*400UL));
-        }
-        
-        else if(isSpace(c) || isWhitespace(c))
-        {
-          writeFreq(1000);
-        }
-      }
-    }
-  }
-}
-*/
 
 void drawCat(unsigned long in_freq, int scale, int repeat)
 {

@@ -105,7 +105,7 @@ const byte cat[CAT_HEIGHT][CAT_WIDTH + 1] PROGMEM = {
 void dds_init(void);
 void dds_reset(void);
 void writeFreq(unsigned long in_freq);
-void draw(unsigned long in_freq, int scale, int repeat);
+void drawCat(unsigned long in_freq, int scale, int repeat);
 
 void dds_init(void)
 {
