@@ -40,7 +40,7 @@ The detail of how one can program the AD9851 is presented in the datasheet.
 ![](./process.png)
 
 ## Signal Properties
-* Main RF Carrier is at **35.0 MHz** (be cautious, configureable at the `void drawCat(unsigned long in_freq, int scale, int repeat)` function).
+* Main RF Carrier is at **35.0 MHz** (be cautious), configureable using `void drawCat(unsigned long in_freq, int scale, int repeat)` function.
 * FM Bandwidth is adjustable using parameter `int scale`.
 * Scan repetition is alse adjustable using parameter `int repeat`.
 
