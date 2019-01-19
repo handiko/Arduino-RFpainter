@@ -13,13 +13,13 @@ A few years ago, a guy who owns GitHub username [drmpeg](https://github.com/drmp
 * Breadboard and some jumper wires
 
 ## Precaution
-**This project will emits radio waves**. If you don't have any proper radio license, please do this at very low power, don't put any RF power amplifier with it, and do at your own risk!
+**This project will emit radio waves**. If you don't have any proper radio license, please do this at very low power, don't put any RF power amplifier with it, and do at your own risk!
 
 ## Principle of Operation
 * Cat picture is stored in the Arduino `PROGMEM` in the form of binary value ASCII art. (white pixel is represented by space and black pixel is represented by alphanumeric)
 * This cat ascii-art is stored in the form of 2-dimensional array`[height, width]`.
 * This array is scanned from the `[height-1, width-1]` index to `[height-1, 0]`, continue to `[height-2, width-1]` to `[height-2, 0]`, and so on until `[0, 0]`.
-* When the element value is space, then the DDS AD9850 is programmed to output very low frequency which we don't care about (in this case, 1 kHz). When the element value is an alphanumeric, then then the DDS AD9850 is programmed to output some RF frequency + some offset, proportional to the width position value.
+* When the element value is a space, then the DDS AD9850 is programmed to output very low frequency which we don't care about (in this case, 1 kHz). When the element value is an alphanumeric, then the DDS AD9850 is programmed to output some RF frequency + some offset, proportional to the width position value.
 * Then, FMCW is generated.
 
 The detail of how one can program the AD9851 is presented in the datasheet.
@@ -32,7 +32,7 @@ The detail of how one can program the AD9851 is presented in the datasheet.
 ## How to Put Your Own Cat (or other pics)
 * Prepare your image, which is black and white.
 * Convert your image into an Ascii Art using this tool : [http://picascii.com/](http://picascii.com/).
-* Convert the non-alphanumeric characters with any alphanumeric.
+* Replace the non-alphanumeric characters with any alphanumeric.
 * Put your Ascii-Art in the Arduino Skecth in the form of a 2 dimensional array and using `PROGMEM` attribute.
 * Write the definitions of your image width and heigth (from the ascii art perspective).
 * Call your ascii-art in the `drawCat` function.
