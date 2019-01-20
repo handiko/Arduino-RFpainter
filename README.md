@@ -1,5 +1,5 @@
 # Arduino RFpainter - Abusing FMCW to Paint Cats on Your Spectrogram
-A few years ago, a guy who owns GitHub username [drmpeg](https://github.com/drmpeg) wrote a nice gnuradio block which is called [gr-painter](https://github.com/drmpeg/gr-paint). This block works very well and I had some fun with it. Now, I don’t have SDR which can transmit anymore, only receive (an el-cheapo RTL SDR dongle) and I want to do that again, so, I can’t. I have some AD9851 DDS modules lying around, so I decided to implement an FMCW version of gr-painter (because I can’t figure out how to implement OFDM on the DDS module, yet). It won’t be as good as gr-painter (which is using OFDM) but it's good enough for me. Sure enough, the DDS module is controlled using Arduino UNO and some rather simple code. 
+A few years ago, [drmpeg](https://github.com/drmpeg) wrote a nice gnuradio block which is called [gr-painter](https://github.com/drmpeg/gr-paint). This block works very well and I had some fun with it. Now, I don’t have SDR which can transmit anymore, only receive (an el-cheapo RTL SDR dongle), and I want to with gr-painter again, so, I can’t. I have some AD9851 DDS modules lying around, so I decided to implement an FMCW version of gr-painter (because I can’t figure out how to implement OFDM on the DDS module, yet). It won’t be as good as gr-painter does (which is using OFDM) but it's good enough for me. Sure, the DDS module is controlled using an Arduino UNO and some rather simple code. 
 
 *Note, FMCW : Frequency Modulated Continuous Wave, OFDM : Orthogonal Frequency Division Multiplexing*
 
@@ -18,8 +18,8 @@ A few years ago, a guy who owns GitHub username [drmpeg](https://github.com/drmp
 ## Principle of Operation
 * Cat picture is stored in the Arduino `PROGMEM` in the form of binary value ASCII art. (white pixel is represented by space and black pixel is represented by alphanumeric)
 * This cat ascii-art is stored in the form of 2-dimensional array`[height, width]`.
-* This array is scanned from the `[height-1, width-1]` index to `[height-1, 0]`, continue to `[height-2, width-1]` to `[height-2, 0]`, and so on until `[0, 0]`.
-* When the element value is a space, then the DDS AD9850 is programmed to output very low frequency which we don't care about (in this case, 1 kHz). When the element value is an alphanumeric, then the DDS AD9850 is programmed to output some RF frequency + some offset, proportional to the width position value.
+* This array is scanned from the `[height-1, 0]` index to `[height-1, width-1]`, continue to `[height-2, 0]` to `[height-2, width-1]`, and so on until `[0, width-1]`.
+* When the array element value is a space, then the DDS AD9850 is programmed to output very low frequency which we don't care about (in this case, 1 kHz). When the element value is an alphanumeric, then the DDS AD9850 is programmed to output some RF frequency + some offset, proportional to the width position value.
 * Then, FMCW is generated.
 
 The detail of how one can program the AD9851 is presented in the datasheet.
